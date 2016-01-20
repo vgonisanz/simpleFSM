@@ -22,12 +22,12 @@ Git tips:
 
 
 * How to merge:
-  $ git checkout master
-  $ git merge --no-ff hotfix-1.2.1
-  $ git tag -a 1.2.1
-  $ git push origin master
+  - $ git checkout master
+  - $ git merge --no-ff hotfix-1.2.1
+  - $ git tag -a 1.2.1
+  - $ git push origin master
 
-Git Methodology: A successful Git branching model --> http://nvie.com/posts/a-successful-git-branching-model/
+- Git Methodology: A successful Git branching model --> http://nvie.com/posts/a-successful-git-branching-model/
 
 Tools tips:
 ----------------------

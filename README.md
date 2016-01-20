@@ -4,7 +4,7 @@ FSM is a finite state machine, with this library in C++ you can create your own 
 Git tips:
 -------------------
     Note:   Edit variables $(var_name) assiming origin is the remote.
-    Note2:  Terminal code prefix $
+    Note2:  Terminal code prefix $ .
 
 · Clone with all submodules:              $ git clone --recursive $(url_repository)
 · Create new branch:                      $ git branch $(branch_name)

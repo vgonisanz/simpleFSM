@@ -36,7 +36,7 @@ namespace simplefsm
 				delete _transitionState;
 			}
 		}
-		State* Fsm::addState(State& state)
+		State* Fsm::addState(State* state)
 		{
 			return nullptr;
 		}

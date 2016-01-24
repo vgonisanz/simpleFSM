@@ -3,19 +3,19 @@
 namespace simplefsm
 {
 		/**
-		 * \brief A event called by a State.
+		 * \brief A event is a condition or trigger that change the state to another one.
 		 *
-		 * \description This event is called automatically by a State when must be executed
+		 * This event will move to another state the FSM when is trigged
 		 *
-		 * \param[in] name
-		 * \param[in] description
+		 * \param[in] Name of the event
+		 * \param[in] Description when and how the event happen
 		 *
 		 */
 		struct Event
 		{
 		public:
-			std::string name;
-			std::string description;
+			std::string name;			///< Name of the event
+			std::string description;	///< Description of the event
 
 			Event():
 			name(std::string("None")),

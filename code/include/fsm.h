@@ -65,7 +65,7 @@ namespace simplefsm
 			/**
 			 * \brief Change initial state of FSM
 			 */
-			void setInitialState(State& state);
+			void setInitialState(State* state);
 
 			/**
 			 * \brief Get initial state of FSM
@@ -99,7 +99,7 @@ namespace simplefsm
 			/**
 			 * \brief Propagate event TODO
 			 */
-			State* propagueEvent(const std::string& name);
+			State* propagateEvent(const std::string& name);
 			/**
 			 * \brief Start the FSM
 			 */

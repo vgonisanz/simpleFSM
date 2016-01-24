@@ -31,16 +31,16 @@ namespace simplefsm
 			ActionBase(State* state);
 			virtual ~ActionBase() = 0;
 
-			virtual std::string getName() = 0;
-			virtual std::string getProperty(std::string id) = 0;
-			virtual State* getState() = 0;
+			virtual std::string getName();
+			virtual std::string getProperty(std::string id);
+			virtual State* getState();
 
-			virtual void setName(std::string name) = 0;
+			virtual void setName(std::string name);
 
 			virtual void init() = 0;
 			virtual void stop() = 0;
 			virtual bool run() = 0;
-			virtual bool needsToRun() = 0;
+			virtual bool needsToRun();
 			virtual ActionBase* createAction(std::string& name) = 0;
 			virtual ActionBase* deserialize(JSONObject action, State* state) = 0;
 

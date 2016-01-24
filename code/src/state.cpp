@@ -26,22 +26,13 @@ namespace simplefsm
 
 		State::~State()
 		{
-			std::vector<ActionBase*>::iterator actionIt = _actions.begin();
-			std::vector<Transition*>::iterator transitionIt = _transitions.begin();
-
-			delete _fsm;
-
-			for (actionIt = _actions.begin(); actionIt != _actions.end(); ++actionIt)
-			{
-				delete *actionIt;
-			}
+			while(!_actions.empty()) delete _actions.back(), _actions.pop_back();
 			_actions.clear();
 
-			for (transitionIt = _transitions.begin(); transitionIt != _transitions.end(); ++transitionIt)
-			{
-				delete *transitionIt;
-			}
+			while(!_transitions.empty()) delete _transitions.back(), _transitions.pop_back();
 			_transitions.clear();
+
+			delete _fsm;
 		}
 		std::string State::getName()
 		{

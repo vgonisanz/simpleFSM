@@ -38,10 +38,19 @@ namespace simplefsm
 		}
 		State* Fsm::addState(State* state)
 		{
+			if(state == nullptr)
+			{
+				LOGE("State is null");
+				return nullptr;
+			}
+			const std::string name = state->getName();
+			LOGD("Adding state: %s", name.c_str());
+			// TODO
 			return nullptr;
 		}
 		State* Fsm::createState(const std::string& name)
 		{
+			LOGD("Creating state with name: %s", name.c_str());
 			return nullptr;
 		}
 		State* Fsm::deserialize(const std::string& fsmString)

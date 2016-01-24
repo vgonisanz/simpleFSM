@@ -43,6 +43,14 @@ namespace simplefsm
 			bool setLocked(bool lock);
 
 			/**
+			 * \brief Get name
+			 */
+			std::string getName();
+			/**
+			 * \brief Get description
+			 */
+			std::string getDescription();
+			/**
 			 * \brief Get the event to change state by name
 			 */
 			std::string getEvent(std::string name);

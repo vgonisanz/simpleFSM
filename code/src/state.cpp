@@ -43,4 +43,12 @@ namespace simplefsm
 			}
 			_transitions.clear();
 		}
+		std::string State::getName()
+		{
+			return _name;
+		}
+		std::string State::getDescription()
+		{
+			return _description;
+		}
 }

@@ -13,6 +13,7 @@
 #define LOG_TAG "Fsm"
 
 #include "state.h"
+#include "transition.h"
 
 namespace simplefsm
 {
@@ -42,6 +43,7 @@ namespace simplefsm
 		}
 		State* Fsm::addState(State* state)
 		{
+			// Null?
 			if(state == nullptr)
 			{
 				LOGE("State is null, cannot add");
@@ -49,13 +51,47 @@ namespace simplefsm
 			}
 			const std::string name = state->getName();
 			LOGD("Adding state: %s", name.c_str());
-			// TODO
+
+			// Exist?
+			for (std::vector<State*>::iterator it = _states.begin();
+								it != _states.end();
+								it++)
+			{
+				if((*it)->getName() == name)
+				{
+					LOGW("Found existing state: %s, adding anyway", name.c_str());
+				}
+			}
+			// Add state
+			_states.push_back(state);
+
+			// First is initial by default
+			if(_states.size() == 1)
+			{
+				setInitialState(state);
+			}
 			return nullptr;
 		}
 		State* Fsm::createState(const std::string& name)
 		{
 			LOGD("Creating state with name: %s", name.c_str());
-			return nullptr;
+
+			// Exist?
+			for (std::vector<State*>::iterator it = _states.begin();
+								it != _states.end();
+								it++)
+			{
+				if((*it)->getName() == name)
+				{
+					// No need to create, already exist
+					LOGD("createState already exist: %s", name.c_str());
+					return (*it);
+				}
+			}
+			// No exist, creating...
+			State* newState = new State(name, this);
+			_states.push_back(newState);
+			return newState;
 		}
 		State* Fsm::deserialize(const std::string& fsmString)
 		{
@@ -133,16 +169,7 @@ namespace simplefsm
 		}
 		bool Fsm::removeState(const std::string& name)
 		{
-			/*
-			State* state = getState(name);
-			if(state == nullptr)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}*/
+			// Delete state if exist
 			bool found = false;
 			for (std::vector<State*>::iterator it = _states.begin();
 					it != _states.end();
@@ -159,24 +186,95 @@ namespace simplefsm
 					++it;
 				}
 			}
+			// Report behavior
 			if(!found)
 			{
 				LOGD("State %s no exist, cannot remove", name.c_str());
+				return false;
+			}
+			else
+			{
+				// Delete transitions from rest states
+				for (std::vector<State*>::iterator it = _states.begin();
+									it != _states.end();
+									it++)
+				{
+					// Check all transitions
+					std::vector<Transition*> transitions = (*it)->getTransitions();
+					for (int i = 0; i < transitions.size(); i++)
+					{
+						// Delete transition to erased target state
+						if(transitions.at(i)->target == name)
+						{
+							(*it)->removeTransition(transitions.at(i)->event);
+						}
+					}
+				}
 			}
 			return found;
 		}
 		State* Fsm::propagateEvent(const std::string& name)
 		{
 			LOGD("Propagating event %s", name.c_str());
-			return nullptr;
+			if(_activeState == nullptr)
+			{
+				LOGE("Current state is null, cannot propagate");
+				return nullptr;
+			}
+			else
+			{
+				std::string targetName = _activeState->propagateEvent(name);
+				State* targetState = getState(targetName);
+				if(targetState == nullptr)
+				{
+					return nullptr;
+				}
+				else
+				{
+					_transitionState = targetState;
+					return targetState;
+				}
+			}
 		}
 		State* Fsm::startFsm()
 		{
 			LOGD("Starting FSM...");
-			return nullptr;
+			if(_initialState == nullptr)
+			{
+				LOGE("Initial state is empty");
+				return nullptr;
+			}
+			else
+			{
+				_transitionState = _initialState;
+				return _initialState;
+			}
 		}
 		void Fsm::update()
 		{
 			LOGD("Updating FSM...");
+			if(_transitionState != nullptr)
+			{
+				// Stop current state if exist
+				if(_activeState != nullptr)
+				{
+					_activeState->stop();
+				}
+				// Update active state and null transition
+				_activeState = _transitionState;
+				_activeState->init();
+				_transitionState = nullptr;
+			}
+
+			if(_activeState != nullptr)
+			{
+				// Update transition state
+				std::string stateName = _activeState->update();
+				State* targetState = getState(stateName);
+				if(targetState != nullptr)
+				{
+					_transitionState = targetState;
+				}
+			}
 		}
 }

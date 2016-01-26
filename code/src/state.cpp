@@ -14,13 +14,13 @@
 
 namespace simplefsm
 {
-		State::State():
+		State::State(std::string name, Fsm* fsm):
 		_name(std::string("None")),
 		_description(std::string("None")),
 		_eventDescription(std::string("None")),
 		_locked(false)
 		{
-			_fsm = nullptr;
+			_fsm = fsm;
 			_actions.clear();
 			_transitions.clear();
 		}
@@ -33,7 +33,7 @@ namespace simplefsm
 			while(!_transitions.empty()) delete _transitions.back(), _transitions.pop_back();
 			_transitions.clear();
 
-			delete _fsm;
+			//delete _fsm; // fsm will free itself, no delete!
 		}
 		std::string State::getName()
 		{
@@ -42,5 +42,17 @@ namespace simplefsm
 		std::string State::getDescription()
 		{
 			return _description;
+		}
+		void State::setName(std::string name)
+		{
+			_name = name;
+		}
+		std::vector<Transition*> State::getTransitions()
+		{
+			return _transitions;
+		}
+		bool State::removeTransition(std::string event)
+		{
+
 		}
 }

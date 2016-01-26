@@ -16,17 +16,17 @@ namespace simplefsm
 		class State
 		{
 		private:
-			std::string _name;				///< Name of the state
-			std::string _description;		///< Small description of the state
-			std::string _eventDescription;	///< Small description of the event
-			bool _locked;					// If true this state cannot be used
-			Fsm* _fsm;
+			std::string _name;					///< Name of the state
+			std::string _description;			///< Small description of the state
+			std::string _eventDescription;		///< Small description of the event
+			bool _locked;						///< If true this state cannot be used
+			Fsm* _fsm;							///< All states are associated to a FSM
 			std::vector<ActionBase*> _actions;
 			std::vector<Transition*> _transitions;
 			// events
 
 		public:
-			State();
+			State(std::string name, Fsm* fsm);
 			~State();
 
 			/**
@@ -41,6 +41,10 @@ namespace simplefsm
 			 * \brief If true parameter is provided, set the state locked only if is not, and viceversa
 			 */
 			bool setLocked(bool lock);
+			/**
+			 * \brief Allow to change name to a state
+			 */
+			void setName(std::string name);
 
 			/**
 			 * \brief Get name
@@ -62,6 +66,15 @@ namespace simplefsm
 			 * \brief Get the transition to a event
 			 */
 			std::string getTransition(std::string event);
+			/**
+			 * \brief Get all transitions
+			 */
+			std::vector<Transition*> getTransitions();
+
+			/**
+			 * \brief Remove a transition from the state
+			 */
+			bool removeTransition(std::string event);
 
 			/**
 			 * \brief When FSM go to a state, this function is called automatically.

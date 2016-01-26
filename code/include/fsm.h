@@ -30,9 +30,9 @@ namespace simplefsm
 		private:
 			std::string _name;				///< Name of the FSM
 			std::vector<State*> _states;	///< Vector with all state in FSM
-			State* _initialState;			///< Initial state
-			State* _activeState;			///< Active state
-			State* _transitionState;		///< Transition state TODO
+			State* _initialState;			///< The first state set before call startFSM
+			State* _activeState;			///< Current state
+			State* _transitionState;		///< Is the next state to propage when update is called
 
 		public:
 			Fsm();
@@ -40,10 +40,15 @@ namespace simplefsm
 
 			/**
 			 * \brief Add a existing state to FSM
+			 *
+			 * Add if exist anyway. Set as initial if is the first one.
+			 *
 			 */
 			State* addState(State* state);
 			/**
-			 * \brief Create a new state to FSM
+			 * \brief Create a new state to FSM or return existing one
+			 *
+			 *
 			 */
 			State* createState(const std::string& name);
 			/**
@@ -66,7 +71,6 @@ namespace simplefsm
 			 * \brief Change initial state of FSM
 			 */
 			void setInitialState(State* state);
-
 			/**
 			 * \brief Get initial state of FSM
 			 */
@@ -90,14 +94,15 @@ namespace simplefsm
 			 */
 			State* getState(const std::string& name);
 			/**
-			 * \brief Remove a state from FSM providing the name
+			 * \brief Remove a state and its transitions from FSM providing the name
 			 *
 			 * \return false if no exist, true if success
 			 */
 			bool removeState(const std::string& name);
-
 			/**
-			 * \brief Propagate event TODO
+			 * \brief Look for the current state what state is the target
+			 *
+			 * \param[in] Name of event target
 			 */
 			State* propagateEvent(const std::string& name);
 			/**
@@ -105,7 +110,7 @@ namespace simplefsm
 			 */
 			State* startFsm();
 			/**
-			 * \brief Update the FSM
+			 * \brief Update the FSM, propagate actions
 			 */
 			void update();
 		};

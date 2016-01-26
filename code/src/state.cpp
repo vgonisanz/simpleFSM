@@ -17,7 +17,8 @@ namespace simplefsm
 		State::State():
 		_name(std::string("None")),
 		_description(std::string("None")),
-		_eventDescription(std::string("None"))
+		_eventDescription(std::string("None")),
+		_locked(false)
 		{
 			_fsm = nullptr;
 			_actions.clear();

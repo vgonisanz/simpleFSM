@@ -11,15 +11,14 @@ namespace simplefsm
 		class State;
 
 		/**
-		 * \brief A finite-state machine (FSM) is a mathematical model of computation used to design both computer programs
+		 * \brief A finite-state machine (FSM) is a mathematical model of computation used to design computer programs based on states and transitions.
 		 *
-		 * It is conceived as an abstract machine that can be in one of a finite number of states.
-		 * The machine is in only one state at a time.
-		 * The state it is in at any given time is called the current state.
-		 * It can change from one state to another when initiated by a triggering event or condition;
-		 * this is called a transition.
-		 * A particular FSM is defined by a list of its states, and the triggering condition for each transition.
-		 *
+		 * The FSM is an abstract machine with a finite number of states and transitions between states.
+		 * The machine is always at one state, called the current state.
+		 * If an event triggers a transition, the FSM will change the state.
+		 * A particular FSM is defined by a list of its states, a list of transitions for each state, and the events that trigger the transitions.
+		 * In adition, this FSM performs actions in every update.
+		 * 
 		 * TODO image
 		 *
 		 * \param[in] value
@@ -29,24 +28,24 @@ namespace simplefsm
 		{
 		private:
 			std::string _name;				///< Name of the FSM
-			std::vector<State*> _states;	///< Vector with all state in FSM
-			State* _initialState;			///< The first state set before call startFSM
+			std::vector<State*> _states;	///< Vector with all the states in FSM
+			State* _initialState;			///< The first state when starting FSM
 			State* _activeState;			///< Current state
-			State* _transitionState;		///< Is the next state to propage when update is called
+			State* _transitionState;		///< The target state after the next update.
 
 		public:
 			Fsm();
 			~Fsm();
 
 			/**
-			 * \brief Add a existing state to FSM
+			 * \brief Adds a existing state to FSM
 			 *
-			 * Add if exist anyway. Set as initial if is the first one.
+			 * Adds if exist anyway. Set as initial if is the first one.
 			 *
 			 */
 			State* addState(State* state);
 			/**
-			 * \brief Create a new state to FSM or return existing one
+			 * \brief Creates a new state to FSM or return existing one
 			 *
 			 *
 			 */
@@ -68,7 +67,7 @@ namespace simplefsm
 			 */
 			Fsm* deserializeFsm(const JSON& fsmString);
 			/**
-			 * \brief Change initial state of FSM
+			 * \brief Changes initial state of FSM
 			 */
 			void setInitialState(State* state);
 			/**
@@ -76,7 +75,7 @@ namespace simplefsm
 			 */
 			State* getInitialState();
 			/**
-			 * \brief Get active state of FSM
+			 * \brief Gets the current state of the FSM
 			 */
 			State* getActiveState();
 			/**
@@ -100,17 +99,17 @@ namespace simplefsm
 			 */
 			bool removeState(const std::string& name);
 			/**
-			 * \brief Look for the current state what state is the target
+			 * \brief Propagates the event throught the state. If a transition is triggered the transitionState is uodated.
 			 *
 			 * \param[in] Name of event target
 			 */
 			State* propagateEvent(const std::string& name);
 			/**
-			 * \brief Start the FSM
+			 * \brief Starts the FSM
 			 */
 			State* startFsm();
 			/**
-			 * \brief Update the FSM, propagate actions
+			 * \brief Updates the FSM, propagates actions
 			 */
 			void update();
 		};

@@ -123,7 +123,7 @@ namespace simplefsm
 			}
 			const std::string name = state->getName();
 			LOGD("Setting initial state: %s", name.c_str());
-			// TODO
+			_initialState = state;
 		}
 		State* Fsm::getInitialState()
 		{
@@ -206,7 +206,8 @@ namespace simplefsm
 						// Delete transition to erased target state
 						if(transitions.at(i)->target == name)
 						{
-							(*it)->removeTransition(transitions.at(i)->event);
+							// TODO problem design
+							//(*it)->removeTransition(transitions.at(i)->event);
 						}
 					}
 				}

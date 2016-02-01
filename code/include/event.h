@@ -9,7 +9,6 @@ namespace simplefsm
 		 *
 		 * \param[in] Name of the event
 		 * \param[in] Description when and how the event happen
-		 *
 		 */
 		struct Event
 		{
